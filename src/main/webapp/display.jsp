@@ -21,6 +21,7 @@
 			      <th scope="col">Id</th>
 			      <th scope="col">Name</th>
 			      <th scope="col">Salary</th>
+			      <th scope="col">Action</th>
 			    </tr>
 			  </thead>
 			  <tbody>
@@ -29,6 +30,7 @@
 			      <td>${emp.id}</td>
 			      <td>${emp.name}</td>
 			      <td>${emp.sal}</td>
+			      <td><a href="delete">Delete</a></td>
 			    </tr>
 			   
 			  </tbody>

@@ -7,10 +7,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.nt.dao.EmpDao;
 
 
 
@@ -21,25 +24,14 @@ public class DeleteServlet extends HttpServlet{
 	@Override
 	public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		
+		int id = Integer.parseInt(req.getParameter("id"));
+		System.out.print(id);
+		EmpDao dao = new EmpDao();
+		dao.delete(id);
 		
-		try {
-			
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_test","root","3nt3r_MYSQL");
-			
-			PreparedStatement ps = con.prepareStatement("delete from tb_employee where id = ?");
-			ps.setInt(1, 576);
-			ps.executeUpdate();
-			con.close();
-			
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
+		RequestDispatcher rd = req.getRequestDispatcher("deleteSuccess.jsp");
+		rd.forward(req, res);
 		
-		PrintWriter pw = res.getWriter();
-		pw.write("<h1>Successfully deleted record</h1>");
-		pw.close();
 	}
 
 }

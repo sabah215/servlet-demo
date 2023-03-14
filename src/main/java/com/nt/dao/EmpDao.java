@@ -4,10 +4,63 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.nt.entity.Employee;
 
 public class EmpDao {
+	
+	public void delete(int id) {
+		
+		try {
+			
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_test",
+					"root", 
+					"password");
+			PreparedStatement ps = con.prepareStatement("delete from tb_employment where id = ?");
+			ps.setInt(1, id);
+			ps.executeQuery();
+			con.close();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public List<Employee> viewDao() {
+		
+		List<Employee> empList = new ArrayList<>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/db_test",
+					"root", 
+					"password");
+			PreparedStatement ps = con.prepareStatement("select * from tb_employee");
+			
+			ResultSet rs = ps.executeQuery();
+			
+
+			while(rs.next()) {
+				Employee emp = new Employee();
+				emp.setId(rs.getInt("id"));
+				emp.setName(rs.getString("name"));
+				emp.setSal(rs.getInt("salary"));
+				empList.add(emp);
+				System.out.println(emp.getId()+" "+emp.getName()+" "+ emp.getSal());
+			}
+			
+			con.close();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return empList;
+	}
 	
 	public Employee selectDao(int id) {
 		Employee emp = new Employee();
@@ -16,7 +69,7 @@ public class EmpDao {
 			Connection con = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/db_test",
 					"root", 
-					"3nt3r_MYSQL");
+					"password");
 			PreparedStatement ps = con.prepareStatement("select * from tb_employee where id=?");
 			ps.setInt(1, id);
 			ps.executeQuery();
@@ -46,7 +99,7 @@ public class EmpDao {
 					Connection con = DriverManager.getConnection(
 							"jdbc:mysql://localhost:3306/db_test",
 							"root", 
-							"3nt3r_MYSQL");
+							"password");
 					PreparedStatement ps = con.prepareStatement("insert into tb_employee values (?,?,?)");
 					ps.setInt(1, id);
 					ps.setString(2, name);
@@ -65,7 +118,7 @@ public class EmpDao {
 		try {
 			
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_test","root","3nt3r_MYSQL");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_test","root","password");
 			
 			PreparedStatement ps = con.prepareStatement("Update tb_employee set salary = ? where name = ?");
 			ps.setInt(1, sal);
